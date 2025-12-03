@@ -1,0 +1,83 @@
+/* ==================================== */
+/* 🚀 RÓTULOS CLICÁVEIS (Pontos por Números) */
+/* ==================================== */
+.label {
+    position: absolute;
+    width: 25px; 
+    height: 25px;
+    
+    /* Configuração Visual Base */
+    background-color: transparent;
+    border-radius: 50%;
+    cursor: pointer;
+    z-index: 10;
+    
+    /* Centralização Exata no Ponto */
+    transform: translate(-50%, -50%); 
+
+    /* Estilo do Container do Número (para exibir ::after) */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    /* Transição para Efeitos */
+    transition: all 0.2s ease-in-out;
+    border: 2px solid transparent; /* Borda invisível para manter o tamanho */
+}
+
+/* Estilo do Número em si (usando ::after) */
+.label::after {
+    /* Estilos de Texto Comuns a Todos os Números */
+    font-weight: 800; /* Mais espesso */
+    font-size: 16px; /* Levemente maior */
+    color: white; /* Cor padrão (será sobrescrita) */
+    text-shadow: 0 0 4px rgba(0, 0, 0, 0.8), 0 0 2px black; /* Sombra mais forte */
+}
+
+.label:hover {
+    /* Efeito ao passar o mouse: Borda de destaque e leve crescimento */
+    border: 2px solid #007bff; /* Exibe uma borda azul ao passar o mouse */
+    transform: translate(-50%, -50%) scale(1.2);
+    box-shadow: 0 0 10px rgba(0, 123, 255, 0.5);
+}
+
+/* --- Definição dos Números e Cores (1 a 13) --- */
+
+/* Intracelulares */
+.label[data-target="rer"]::after { content: "1"; color: #FFD700; } 
+.label[data-target="nucleo"]::after { content: "2"; color: #FF4500; font-size: 20px; } /* Núcleo maior */
+.label[data-target="ser"]::after { content: "3"; color: #00FF7F; } 
+.label[data-target="mitocondria1"]::after { content: "4"; color: #FF6347; } 
+.label[data-target="membrana"]::after { content: "5"; color: #ADD8E6; } 
+.label[data-target="mitocondria2"]::after { content: "6"; color: #FF6347; }
+.label[data-target="lisossomo"]::after { content: "7"; color: #9370DB; } 
+.label[data-target="centriolos"]::after { content: "8"; color: #FFFF00; } 
+.label[data-target="vesicula"]::after { content: "9"; color: #FFA07A; } 
+.label[data-target="golgi"]::after { content: "10"; color: #F08080; } 
+.label[data-target="ribossomo"]::after { content: "11"; color: #A9A9A9; } 
+
+/* Extracelulares (Novos Itens) */
+.label[data-target="extracelular"]::after { content: "12"; color: #00BFFF; } /* Meio Extracelular */
+.label[data-target="matriz"]::after { content: "13"; color: #8FBC8F; } /* Matriz Extracelular */
+
+
+/* ==================================== */
+/* 🗺️ POSICIONAMENTO DOS RÓTULOS */
+/* (Mantenha este bloco separado para facilitar ajustes) */
+/* ==================================== */
+
+.label[data-target="rer"] { top: 25%; left: 75%; }
+.label[data-target="nucleo"] { top: 48%; left: 50%; width: 50px; height: 50px; } /* Área maior para o Núcleo */
+.label[data-target="ser"] { top: 35%; left: 15%; }
+.label[data-target="mitocondria1"] { top: 25%; left: 20%; }
+.label[data-target="membrana"] { top: 5%; left: 50%; } 
+.label[data-target="mitocondria2"] { top: 80%; left: 25%; }
+.label[data-target="lisossomo"] { top: 85%; left: 45%; }
+.label[data-target="centriolos"] { top: 80%; left: 70%; }
+.label[data-target="vesicula"] { top: 65%; left: 85%; }
+.label[data-target="golgi"] { top: 45%; left: 80%; }
+.label[data-target="ribossomo"] { top: 35%; left: 78%; }
+
+/* NOVAS POSIÇÕES FORA DA CÉLULA */
+.label[data-target="extracelular"] { top: 10%; left: 90%; } 
+.label[data-target="matriz"] { top: 90%; left: 10%; }

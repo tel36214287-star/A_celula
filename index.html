@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Célula Humana Interativa 🔬</title>
+    <style>
+        /* ==================================== */
+        /* ESTILOS GERAIS */
+        /* ==================================== */
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 0;
+            padding: 20px;
+            background-color: #f0f0f0;
+        }
+
+        h1 {
+            color: #1a1a1a;
+            margin-bottom: 20px;
+        }
+
+        /* Botão 3D */
+        .link-3d {
+            display: inline-block;
+            margin-bottom: 20px;
+            padding: 10px 20px;
+            background-color: #28a745;
+            color: white;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: bold;
+            transition: background-color 0.3s, transform 0.2s;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .link-3d:hover {
+            background-color: #218838;
+            transform: translateY(-2px);
+        }
+
+        /* ==================================== */
+        /* CONTÊINER DA CÉLULA E IMAGEM */
+        /* ==================================== */
+        .cell-container {
+            position: relative;
+            max-width: 600px;
+            margin: 20px 0;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .cell-image {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        /* ==================================== */
+        /* RÓTULOS CLICÁVEIS (COM NÚMEROS) */
+        /* ==================================== */
+        .label {
+            position: absolute;
+            width: 25px; 
+            height: 25px;
+            background-color: transparent;
+            border-radius: 50%;
+            cursor: pointer;
+            z-index: 10;
+            transform: translate(-50%, -50%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 14px;
+            color: white;
+            text-shadow: 0 0 3px black; 
+            border: 2px solid transparent; 
+            transition: all 0.2s;
+        }
+
+        .label:hover {
+            border: 2px solid #007bff;
+            transform: translate(-50%, -50%) scale(1.2);
+            box-shadow: 0 0 10px rgba(0, 123, 255, 0.5);
+        }
+
+        /* POSICIONAMENTO DOS RÓTULOS */
+        .label[data-target="rer"] { top: 25%; left: 75%; }
+        .label[data-target="nucleo"] { top: 48%; left: 50%; width: 50px; height: 50px; } 
+        .label[data-target="ser"] { top: 35%; left: 15%; }
+        .label[data-target="mitocondria1"] { top: 25%; left: 20%; }
+        .label[data-target="membrana"] { top: 5%; left: 50%; } 
+        .label[data-target="mitocondria2"] { top: 80%; left: 25%; }
+        .label[data-target="lisossomo"] { top: 85%; left: 45%; }
+        .label[data-target="centriolos"] { top: 80%; left: 70%; }
+        .label[data-target="vesicula"] { top: 65%; left: 85%; }
+        .label[data-target="golgi"] { top: 45%; left: 80%; }
+        .label[data-target="ribossomo"] { top: 35%; left: 78%; }
+        .label[data-target="extracelular"] { top: 10%; left: 90%; } 
+        .label[data-target="matriz"] { top: 90%; left: 10%; }
+
+        /* NÚMEROS E CORES */
+        .label[data-target="rer"]::after { content: "1"; color: #FFD700; } 
+        .label[data-target="nucleo"]::after { content: "2"; color: #FF4500; font-size: 20px; } 
+        .label[data-target="ser"]::after { content: "3"; color: #00FF7F; } 
+        .label[data-target="mitocondria1"]::after { content: "4"; color: #FF6347; } 
+        .label[data-target="membrana"]::after { content: "5"; color: #ADD8E6; } 
+        .label[data-target="mitocondria2"]::after { content: "6"; color: #FF6347; } 
+        .label[data-target="lisossomo"]::after { content: "7"; color: #9370DB; } 
+        .label[data-target="centriolos"]::after { content: "8"; color: #FFFF00; } 
+        .label[data-target="vesicula"]::after { content: "9"; color: #FFA07A; } 
+        .label[data-target="golgi"]::after { content: "10"; color: #F08080; } 
+        .label[data-target="ribossomo"]::after { content: "11"; color: #A9A9A9; } 
+        .label[data-target="extracelular"]::after { content: "12"; color: #00BFFF; } 
+        .label[data-target="matriz"]::after { content: "13"; color: #8FBC8F; }
+
+        /* ==================================== */
+        /* CAIXA DE INFORMAÇÕES */
+        /* ==================================== */
+        #info-box {
+            margin-top: 20px;
+            padding: 20px;
+            border: 2px solid #007bff; 
+            background-color: #e6f0ff; 
+            max-width: 600px;
+            width: 90%;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        #info-box.hidden {
+            display: none;
+        }
+
+        #info-title {
+            margin-top: 0;
+            color: #0056b3;
+            font-size: 1.4em;
+        }
+
+        #info-text {
+            color: #333;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Célula Humana Interativa</h1>
+
+<div class="cell-container">
+    <img src="img_cell.png" alt="Diagrama da Célula Humana" class="cell-image">
+
+    <!-- Link para o vídeo MP4 -->
+    <p style="text-align:center; margin-top:10px;">
+        <a href="celula_humana_3d.mp4" target="_blank">Ver vídeo da célula em 3D (MP4)</a>
+    </p>
+
+    <div class="label" data-target="rer" title="Retículo Endoplasmático Rugoso"></div>
+    <div class="label" data-target="nucleo" title="Núcleo"></div>
+    <div class="label" data-target="ser" title="Retículo Endoplasmático Liso"></div>
+    <div class="label" data-target="mitocondria1" title="Mitocôndria"></div>
+    <div class="label" data-target="membrana" title="Membrana Plasmática"></div>
+    <div class="label" data-target="mitocondria2" title="Mitocôndria"></div>
+    <div class="label" data-target="lisossomo" title="Lisossomo"></div>
+    <div class="label" data-target="centriolos" title="Centríolos"></div>
+    <div class="label" data-target="vesicula" title="Vesícula"></div>
+    <div class="label" data-target="golgi" title="Complexo de Golgi"></div>
+    <div class="label" data-target="ribossomo" title="Ribossomo"></div>
+    <div class="label" data-target="extracelular" title="Meio Extracelular"></div>
+    <div class="label" data-target="matriz" title="Matriz Extracelular"></div>
+</div>
+
+<div id="info-box" class="hidden">
+    <h2 id="info-title"></h2>
+    <p id="info-text"></p>
+</div>
+
+<script>
+    // ======================================
+    // Interatividade das Organelas (JavaScript)
+    // ======================================
+
+    const labels = document.querySelectorAll('.label');
+    const infoBox = document.getElementById('info-box');
+    const infoTitle = document.getElementById('info-title');
+    const infoText = document.getElementById('info-text');
+
+    const organelasInfo = {
+        rer: { title: "1. Retículo Endoplasmático Rugoso (RER)", text: "Responsável pela **síntese e transporte de proteínas** devido à presença de ribossomos." },
+        nucleo: { title: "2. Núcleo", text: "Contém o **DNA** (material genético) e controla as atividades da célula." },
+        ser: { title: "3. Retículo Endoplasmático Liso (REL)", text: "Sintetiza **lipídios** e atua na **desintoxicação** celular." },
+        mitocondria1: { title: "4. Mitocôndria", text: "As 'usinas de energia'. Realizam a **respiração celular** e produzem **ATP**." },
+        membrana: { title: "5. Membrana Plasmática", text: "Regula a **entrada e saída de substâncias** na célula (permeabilidade seletiva)." },
+        mitocondria2: { title: "6. Mitocôndria", text: "As 'usinas de energia'. Realizam a **respiração celular** e produzem **ATP**." },
+        lisossomo: { title: "7. Lisossomo", text: "Responsável pela **digestão intracelular** de resíduos e partículas." },
+        centriolos: { title: "8. Centríolos", text: "Participam da **divisão celular** e formação de cílios e flagelos." },
+        vesicula: { title: "9. Vesícula", text: "Pequena bolsa que **armazena e transporta** substâncias dentro e fora da célula." },
+        golgi: { title: "10. Complexo de Golgi", text: "Atua no **empacotamento, modificação e distribuição** de substâncias para exportação." },
+        ribossomo: { title: "11. Ribossomo", text: "Local onde ocorre a **síntese de proteínas** (tradução)." },
+        extracelular: { title: "12. Meio Extracelular / Intersticial", text: "Região **fora da célula** preenchida com fluido (água, íons e nutrientes). É o meio de troca de substâncias com o sangue." },
+        matriz: { title: "13. Matriz Extracelular (MEC)", text: "Rede complexa de **macromoléculas (colágeno, elastina)** que dá **suporte estrutural e bioquímico** aos tecidos e células." }
+    };
+
+    labels.forEach(label => {
+        label.addEventListener('click', () => {
+            const target = label.dataset.target;
+            if (organelasInfo[target]) {
+                infoTitle.textContent = organelasInfo[target].title;
+                infoText.textContent = organelasInfo[target].text;
+                infoBox.classList.remove('hidden');
+            }
+        });
+    });
+</script>
+
+</body>
+</html>
